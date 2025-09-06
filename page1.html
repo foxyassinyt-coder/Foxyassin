@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سلايدر صور مربعة مع شفافية</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(#777, #fff, #777);
+      font-family: sans-serif;
+    }
+
+    .slider {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    .card {
+      width: 100px;
+      aspect-ratio: 1/1; /* مربع */
+      border-radius: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .card.center {
+      width: 160px; /* البطاقة الوسطى أكبر */
+      aspect-ratio: 1/1;
+      z-index: 2;
+      cursor: default;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;   /* يحافظ على الأبعاد ويظهر الشفافية */
+      background-color: transparent;
+      pointer-events: none; /* يسمح بالنقر على الرابط وليس الصورة */
+    }
+
+    /* شفافية جانبية */
+    .card.left::after,
+    .card.right::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      pointer-events: none;
+    }
+
+    .card.left::after {
+      left: 0;
+      background: linear-gradient(to left, transparent, rgba(255,255,255,0.9));
+    }
+
+    .card.right::after {
+      right: 0;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.9));
+    }
+
+    .arrow {
+      position: absolute;
+      font-size: 2rem;
+      color: white;
+      background: black;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      z-index: 3;
+    }
+
+    .arrow.left { left: 55px; }
+    .arrow.right { right: 55px; }
+
+    .dots {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+    }
+
+    .dot {
+      width: 40px;
+      height: 4px;
+      background: black;
+      border-radius: 2px;
+      opacity: 0.3;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="slider">
+    <div class="arrow left">&#10094;</div>
+    <div class="card left"><img src="" alt="left"></div>
+    <a href="#" target="_blank" class="card center"><img src="" alt="center"></a>
+    <div class="card right"><img src="" alt="right"></div>
+    <div class="arrow right">&#10095;</div>
+
+    <div class="dots"></div>
+  </div>
+
+  <script>
+    const images = [
+      { src: "https://tinypic.host/images/2025/09/06/92c17c5b50769a079c.png", link: "https://example.com/page1" },
+      { src: "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png", link: "https://example.com/page2" },
+      { src: "https://tinypic.host/images/2025/09/06/92c17c5b50769a079c.png", link: "https://example.com/page3" },
+      { src: "https://tinypic.host/images/2025/09/06/92c17c5b50769a079c.png", link: "https://example.com/page4" },
+      { src: "https://tinypic.host/images/2025/09/06/92c17c5b50769a079c.png", link: "https://example.com/page5" }
+    ];
+
+    let index = 0;
+
+    const leftCard = document.querySelector(".card.left img");
+    const centerCard = document.querySelector(".card.center img");
+    const rightCard = document.querySelector(".card.right img");
+    const centerLink = document.querySelector(".card.center");
+    const dotsContainer = document.querySelector(".dots");
+
+    // إنشاء النقاط
+    images.forEach((_, i) => {
+      const dot = document.createElement("div");
+      dot.classList.add("dot");
+      if (i === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => showSlide(i));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll(".dot");
+
+    function showSlide(i) {
+      index = (i + images.length) % images.length;
+      const leftIndex = (index - 1 + images.length) % images.length;
+      const rightIndex = (index + 1) % images.length;
+
+      centerCard.src = images[index].src;
+      centerLink.href = images[index].link;
+      leftCard.src = images[leftIndex].src;
+      rightCard.src = images[rightIndex].src;
+
+      dots.forEach(dot => dot.classList.remove("active"));
+      dots[index].classList.add("active");
+    }
+
+    // أزرار الأسهم
+    document.querySelector(".arrow.left").addEventListener("click", () => {
+      showSlide(index - 1);
+    });
+    document.querySelector(".arrow.right").addEventListener("click", () => {
+      showSlide(index + 1);
+    });
+
+    // الضغط على الصور الجانبية
+    document.querySelector(".card.left").addEventListener("click", () => showSlide(index - 1));
+    document.querySelector(".card.right").addEventListener("click", () => showSlide(index + 1));
+
+    // سحب باللمس / الماوس
+    let startX = 0;
+    centerLink.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    centerLink.addEventListener("touchend", e => {
+      let endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) showSlide(index + 1);
+      if (endX - startX > 50) showSlide(index - 1);
+    });
+
+    centerLink.addEventListener("mousedown", e => startX = e.clientX);
+    centerLink.addEventListener("mouseup", e => {
+      let endX = e.clientX;
+      if (startX - endX > 50) showSlide(index + 1);
+      if (endX - startX > 50) showSlide(index - 1);
+    });
+
+    // أول عرض
+    showSlide(0);
+  </script>
+</body>
+</html>
