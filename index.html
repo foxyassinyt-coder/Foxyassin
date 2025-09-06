@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>موقعي البسيط</title>
+  <style>
+    body{
+      margin:0;
+      font-family:"Cairo", sans-serif;
+      background:url("https://i.ibb.co/mJ3V6bV/img3.jpg") no-repeat center center fixed;
+      background-size:cover;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+      position:relative;
+    }
+
+    /* طبقة شفافة فوق الخلفية العامة */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.6);
+      z-index:-1;
+    }
+
+    header, footer{
+      background:rgba(0,0,0,0.7);
+      color:#fff;
+      text-align:center;
+      padding:15px;
+    }
+
+    .wrap{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      gap:15px;
+    }
+
+    .tile{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:90%;
+      max-width:500px;
+      height:150px;
+      background-size:cover;
+      background-position:center;
+      border:3px solid #fff;
+      color:#fff;
+      font-size:26px;
+      font-weight:bold;
+      text-decoration:none;
+      border-radius:10px;
+      overflow:hidden;
+      transition:transform 0.2s, filter 0.2s;
+    }
+
+    /* طبقة شفافة فوق الصورة */
+    .tile::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.3); /* شفافية فقط فوق الصورة */
+    }
+
+    .tile span{
+      position:relative;
+      z-index:1;
+    }
+
+    .tile:hover{
+      transform:scale(1.03);
+      filter:brightness(1.1);
+    }
+
+    /* روابط السوشيال ميديا */
+    .social-links {
+      margin-top:10px;
+      display:flex;
+      justify-content:center;
+      gap:15px;
+      flex-wrap:wrap;
+    }
+
+    .social-links a img {
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      transition:transform 0.3s;
+    }
+
+    .social-links a img:hover {
+      transform:scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>مرحباً بك في موقعي</h1>
+  </header>
+
+  <main class="wrap">
+    <a class="tile" href="ad.html?page=page1.html" style="background-image:url('https://i.ibb.co/7nYwz8h/img1.jpg');">
+      <span>صفحة 1</span>
+    </a>
+    <a class="tile" href="ad.html?page=page2.html" style="background-image:url('https://i.ibb.co/5M9xqfw/img2.jpg');">
+      <span>صفحة 2</span>
+    </a>
+    <a class="tile" href="ad.html?page=page3.html" style="background-image:url('https://i.ibb.co/mJ3V6bV/img3.jpg');">
+      <span>صفحة 3</span>
+    </a>
+    <a class="tile" href="ad.html?page=page4.html" style="background-image:url('https://i.ibb.co/8rkXccz/img4.jpg');">
+      <span>صفحة 4</span>
+    </a>
+  </main>
+
+  <footer>
+    <p>© 2025 جميع الحقوق محفوظة</p>
+    <div class="social-links">
+      <a href="https://facebook.com/YourPage" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook">
+      </a>
+      <a href="https://twitter.com/YourPage" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/124/124021.png" alt="Twitter">
+      </a>
+      <a href="https://instagram.com/YourPage" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+      </a>
+      <a href="https://youtube.com/YourPage" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+      </a>
+      <a href="https://wa.me/1234567890" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
